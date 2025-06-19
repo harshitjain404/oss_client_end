@@ -1,0 +1,191 @@
+.quotation-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.quotation-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.quotation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* === Floating Label Input Group === */
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 12px 12px 12px 0;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  font-size: 16px;
+  transition: 0.3s all;
+}
+
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+  border-color: #007BFF;
+}
+
+.input-group label {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  font-size: 16px;
+  color: #888;
+  transition: 0.3s all;
+  pointer-events: none;
+}
+
+.input-group input.filled + label,
+.input-group textarea.filled + label,
+.input-group select.filled + label,
+.input-group input:focus + label,
+.input-group textarea:focus + label,
+.input-group select:focus + label {
+  top: -10px;
+  font-size: 13px;
+  color: #007BFF;
+}
+
+/* === Service Entry Row === */
+.service-entry-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.service-entry-row .input-group.half {
+  flex: 1 1 60%;
+}
+
+.service-entry-row .input-group.quarter {
+  flex: 1 1 30%;
+}
+
+.add-btn {
+  padding: 10px 14px;
+  font-size: 18px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #218838;
+}
+
+/* === Service List === */
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f9f9f9;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.service-item input {
+  padding: 5px 10px;
+  font-size: 14px;
+  width: 120px;
+}
+
+.service-item button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+.service-item .remove-btn {
+  color: #dc3545;
+}
+
+.service-item .remove-btn:hover {
+  color: #c82333;
+}
+
+/* === Action Buttons === */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.pdf-btn,
+.whatsapp-btn {
+  padding: 10px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.pdf-btn {
+  background-color: #343a40;
+}
+
+.pdf-btn:hover {
+  background-color: #23272b;
+}
+
+.whatsapp-btn {
+  background-color: #25D366;
+}
+
+.whatsapp-btn:hover {
+  background-color: #1ebe57;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  .service-entry-row {
+    flex-direction: column;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .service-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .service-item input {
+    width: 100%;
+  }
+}

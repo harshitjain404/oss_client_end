@@ -1,0 +1,151 @@
+/* issueForm.css */
+
+/* Base form container */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Input group with floating labels */
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.phone-group {
+  position: relative;
+}
+
+.phone-prefix {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: #555;
+}
+
+.phone-group input[type="tel"] {
+  padding-left: 40px !important;
+}
+
+.error-text {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+
+/* Input and select fields */
+.form-input {
+  width: 100%;
+  padding: 1.25rem 0.75rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: white;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Floating label */
+.input-group label {
+  position: absolute;
+  top: 1rem;
+  left: 0.75rem;
+  color: #777;
+  font-size: 1rem;
+  background: white;
+  padding: 0 4px;
+  transition: 0.2s ease all;
+  pointer-events: none;
+}
+
+.form-input:focus + label,
+.input-group .filled + label {
+
+  top: -0.6rem;
+  left: 0.6rem;
+  font-size: 0.8rem;
+  color: #3b82f6;
+}
+
+/* File input */
+input[type="file"] {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  border: none;
+  background-color: transparent;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #2563eb;
+  color: white;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Toast popup (centered modal style) */
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #4ade80;
+  color: #065f46;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 1.25rem 1rem;
+  }
+
+  .form-input {
+    font-size: 0.95rem;
+    padding: 1rem 0.75rem 0.5rem;
+  }
+
+  .input-group label {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  .toast {
+    width: 90%;
+    font-size: 0.95rem;
+  }
+}
