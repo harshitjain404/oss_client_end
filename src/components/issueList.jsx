@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, orderBy, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import './issueList.css';
+import { useNavigate } from 'react-router-dom';
 
 const defaultMetadata = {
   relatedToService: false,
@@ -17,6 +18,22 @@ function IssueList() {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [metadataForm, setMetadataForm] = useState(defaultMetadata);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+   const handleGenerateQuotation = (issue) => {
+    const phoneValid = isValidPhone(issue.phone);
+    if (!phoneValid) return alert("Phone number must be 10 digits");
+
+    const address = `${issue.addressLine1 || ''}, ${issue.addressLine2 || ''}, ${issue.addressLine3 || ''}`;
+    navigate('/quotation', {
+      state: {
+        name: issue.name,
+        phone: `+91${issue.phone}`,
+        address: address,
+        issueNumber: issue.issueNumber,
+      }
+    });
+  };
 
   useEffect(() => {
     const fetchIssues = async () => {
@@ -202,8 +219,6 @@ function IssueList() {
                       `✅ Status: ${issue.metadata?.workStatus || 'Pending'}\n` +
                       `🔁 Warranty: ${issue.metadata?.warrantyOffered || 'N/A'}\n` +
                       `⭐ Review Taken: ${issue.metadata?.reviewTaken ? 'Yes' : 'No'}\n` 
-                    
-                      
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -212,6 +227,7 @@ function IssueList() {
                     📤 Share Issue
                   </a>
                 </div>
+                <button onClick={() => handleGenerateQuotation(issue)}>Generate Quotation</button>
               </div>
             );
           })}

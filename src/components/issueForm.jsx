@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import './issueForm.css';
 import { db } from '../firebase';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { runTransaction, doc } from 'firebase/firestore';
+
 
 function IssueForm() {
   const [showToast, setShowToast] = useState(false);
@@ -51,16 +53,33 @@ function IssueForm() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (formData.phone.length !== 10) {
-      setPhoneError('Phone number must be exactly 10 digits');
-      return;
-    }
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (formData.phone.length !== 10) {
+    setPhoneError('Phone number must be exactly 10 digits');
+    return;
+  }
+
+  try {
+    // 🔁 Atomically increment the issue counter in Firestore
+    const newIssueNumber = await runTransaction(db, async (transaction) => {
+      const counterRef = doc(db, 'counters', 'issueCounter');
+      const counterDoc = await transaction.get(counterRef);
+
+      if (!counterDoc.exists()) {
+        throw new Error('Issue counter does not exist');
+      }
+
+      const newCount = (counterDoc.data().count || 0) + 1;
+      transaction.update(counterRef, { count: newCount });
+      return newCount;
+    });
 
     const message = `New Issue Reported:
-Issue No: ${issueNumber}
-Issue Date: ${issueDate}
+Issue No: ${newIssueNumber}
+Issue Date: ${new Date().toLocaleDateString('en-GB', {
+  day: '2-digit', month: '2-digit', year: '2-digit'
+})}
 Name: ${formData.name}
 Phone: +91${formData.phone}
 Nature of Work: ${formData.natureOfWork}
@@ -74,43 +93,50 @@ Description: ${formData.description}
 Preferred Timing: ${formData.suitableTiming} at ${formData.preferredTime}
 Preferred Date: ${formData.preferredDate}`;
 
-    try {
-      await fetch('/api/send-whatsapp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message }),
-      });
+    // Send WhatsApp message
+    await fetch('/api/send-whatsapp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message }),
+    });
 
-      await addDoc(collection(db, 'issues'), {
-        ...formData,
-        phone: formData.phone,
-        timestamp: new Date(),
-        issueNumber,
-      });
+    // Store issue in Firestore
+    await addDoc(collection(db, 'issues'), {
+      ...formData,
+      phone: formData.phone,
+      timestamp: new Date(),
+      issueNumber: newIssueNumber,
+    });
 
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
 
-      setFormData({
-        name: '',
-        phone: '',
-        natureOfWork: '',
-        email: '',
-        addressLine1: '',
-        addressLine2: '',
-        addressLine3: '',
-        category: '',
-        description: '',
-        suitableTiming: '',
-        preferredDate: new Date().toISOString().split('T')[0],
-        preferredTime: '',
-        photo: null,
-      });
-    } catch (error) {
-      console.error('Error submitting issue:', error);
-      alert('Failed to submit issue.');
-    }
-  };
+    setFormData({
+      name: '',
+      phone: '',
+      natureOfWork: '',
+      email: '',
+      addressLine1: '',
+      addressLine2: '',
+      addressLine3: '',
+      category: '',
+      description: '',
+      suitableTiming: '',
+      preferredDate: new Date().toISOString().split('T')[0],
+      preferredTime: '',
+      photo: null,
+    });
+    setPhoneError('');
+    setIssueNumber(newIssueNumber);
+    setIssueDate(new Date().toLocaleDateString('en-GB', {
+      day: '2-digit', month: '2-digit', year: '2-digit'
+    }));
+
+  } catch (error) {
+    console.error('Error submitting issue:', error);
+    alert('Failed to submit issue.');
+  }
+};
 
   const generateTimeOptions = () => {
     const times = [];
@@ -225,9 +251,8 @@ Preferred Date: ${formData.preferredDate}`;
             name="description"
             value={formData.description}
             onChange={handleChange}
-            required
             className={`form-input ${formData.description ? 'filled' : ''}`}
-            rows="4"
+            rows="2" 
           />
           <label className={formData.description ? 'filled' : ''}>Describe the issue</label>
         </div>
