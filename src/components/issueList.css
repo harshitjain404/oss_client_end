@@ -214,6 +214,19 @@
   background-color: #0e705f;
 }
 
+/* 
+.search-bar {
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  width: 90%;
+  max-width: 600px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: block;
+}
+ */
+
 
 @media screen and (max-width: 600px) {
   .fullscreen-card {
@@ -226,3 +239,27 @@
   }
 }
   
+
+.search-bar-container {
+  position: sticky; /* keeps it visible on scroll */
+  top: 0; /* stick to the very top */
+  /* background: white;  */
+  z-index: 1000; /* ensure it stays above issues */
+  padding: 10px 15px;
+  /* border-bottom: 1px solid #ddd; */
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+}
