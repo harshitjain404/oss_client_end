@@ -80,8 +80,8 @@ function App() {
           <Routes>
             <Route path="/" element={<IssueForm />} />
             <Route path="/login" element={<AdminLogin />} />
-            <Route path="/issues" element={<ProtectedRoute element={<IssueList />} />} />
-            <Route path="/quotation" element={<ProtectedRoute element={<QuotationGenerator />} />} />
+            <Route path="/issues" element={<IssueList />} />
+            <Route path="/quotation" element={<QuotationGenerator/>} />
           </Routes>
         </main>
 
